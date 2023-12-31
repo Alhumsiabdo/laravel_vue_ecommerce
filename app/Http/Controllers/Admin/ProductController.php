@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\{
+    Brand,
+    Category,
     Product,
     ProductImage
 };
@@ -16,7 +18,13 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = Product::get();
-        return Inertia::render('Admin/Product/Index', ['products' => $products]);
+        $brands = Brand::get();
+        $categories = Category::get();
+        return Inertia::render('Admin/Product/Index', [
+            'products' => $products,
+            'brands' => $brands,
+            'categories' => $categories
+        ]);
     }
 
     public function storeProduct(Request $request)
@@ -49,6 +57,6 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('admin.product.index')->with('success', 'Product created successfully!');
+        return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');
     }
 }
